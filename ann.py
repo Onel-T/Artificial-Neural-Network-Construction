@@ -3,6 +3,7 @@ class node:
         self.connections = connections
         self.collector = 0.0
 
+
 # Returns list of numbers from csv
 def strip_csv(csv):
     list_of_nums = []
@@ -20,11 +21,11 @@ def strip_csv(csv):
     return list_of_nums
 
 
-def create_layer(number_of_nodes, last_layer):
+def create_layer(number_of_nodes):
     new_layer = []
     # Loop amount of nodes
     for i in range(number_of_nodes):
-        new_layer.append(node(last_layer))
+        new_layer.append(node(None)) # Appending node object with no connections
     
     return new_layer
 
@@ -37,17 +38,30 @@ def create_connections(network):
 
 
 def create_network(nodes_per_layer):
-    last_layer = None
     network = []
 
-    # Loop amount of elements (layers)
+    # Loop amount of layers to create each layer
     for num_nodes in nodes_per_layer:
-        network.append(create_layer(num_nodes, last_layer))
+        network.append(create_layer(num_nodes))
 
     create_connections(network)
 
     return network
 
+
+def propagate_input(network, input_numbers):
+    # Storing input values in first layer
+    for i in range(len(network[0])):
+        network[0][i].collector = input_numbers[i]
+
+    # Loop for number of layers (excluding the last layer)
+    for layer in range(len(network) - 1):
+        # Loop for number of nodes in the current layer
+        for node in network[layer]:
+            # Loop for number of connections in the current node
+            for connected_node in node.connections:
+                # Accessing the collector for each connection to the node
+                connected_node.collector = connected_node.collector + node.collector
     
 
 if __name__ == '__main__':
@@ -56,6 +70,9 @@ if __name__ == '__main__':
 
     network = create_network(nodes_per_layer)
 
+    propagate_input(network, input_nums)
 
-
+    # Print out the value of each node in the last layer
+    for n in range(len(network[-1])):
+        print(network[-1][n].collector)
 
