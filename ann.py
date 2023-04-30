@@ -85,13 +85,8 @@ class network:
         activation = 0
         for i in range(len(node.weights)):
             # Node will have all the weights from connection to previous layer
-            # print("WEIGHT: ", node.weights[i])
-            # print("INPUT[i]: ", inputs[i])
-            # print("LEN: ", len(node.weights))
             activation += node.weights[i] * inputs[i]   # sum(weight_i * input_i)
-        # print("                             ACTIVATION: ", activation)
         node.collector = self.transfer(activation)
-        # print("                             TRANSFER: ", node.collector)
 
     # Sigmoid
     def transfer(self, activation):
