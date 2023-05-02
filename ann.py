@@ -165,11 +165,7 @@ class network:
             
             if sum_error <= target_error:
                 print("Target Error Reached error=%.3f" % ( sum_error))
-                # print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
                 return
-            
-            # if epoch % 100 == 0:
-            #     print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
 
 
 if __name__ == '__main__':
@@ -179,7 +175,7 @@ if __name__ == '__main__':
     # 2d list containing layers and node objects in each layer  ( network[layer][node] )
     created_network = create_network(nodes_per_layer)
 
-    data_base = sqlite3.connect("hw_data_2") 
+    data_base = sqlite3.connect("hw_data") 
     cur = data_base.cursor()
 
     res = cur.execute("""select a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27
@@ -210,18 +206,11 @@ if __name__ == '__main__':
     ,a700,a701,a702,a703,a704,a705,a706,a707,a708,a709,a710,a711,a712,a713,a714,a715,a716,a717,a718,a719,a720,a721,a722,a723,a724,a725,a726,a727
     ,a728,a729,a730,a731,a732,a733,a734,a735,a736,a737,a738,a739,a740,a741,a742,a743,a744,a745,a746,a747,a748,a749,a750,a751,a752,a753,a754,a755
     ,a756,a757,a758,a759,a760,a761,a762,a763,a764,a765,a766,a767,a768,a769,a770,a771,a772,a773,a774,a775,a776,a777,a778,a779,a780,a781,a782,a783
-    ,letter from hw_data_2 where letter = 1 limit 10;""")
+    ,letter from hw_data_2 order by random() limit 100;""")
     
     input_nums = res.fetchall()
-    
+
     network_obj = network(created_network)
-    # print(input_nums[0])
-    network_obj.train_network(input_nums, 0.1, 1000000, 0.05)
-
-
-    # print(network)
-
-    # Print out the value of each node in the last layer
-    # for n in range(len(network[-1])):
-    #     print(network[-1][n].collector)
+ 
+    network_obj.train_network(input_nums, 1, 1000000, 0.05)
 
